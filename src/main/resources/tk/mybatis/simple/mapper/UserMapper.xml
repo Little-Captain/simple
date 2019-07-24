@@ -27,4 +27,17 @@
                create_time   createTime
         FROM t_sys_user;
     </select>
+    <select id="selectRolesByUserId" resultType="tk.mybatis.simple.model.SysRole">
+        SELECT r.sys_role_id id,
+               r.role_name   name,
+               r.enabled     enabled,
+               r.create_by   createBy,
+               r.create_time createTime,
+               u.user_name   `user.username`,
+               u.user_email  `user.email`
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{userId};
+    </select>
 </mapper>
