@@ -34,7 +34,7 @@ public class TestCountryMapper {
             List<Country> countryList = sqlSession.selectList("selectAll");
             countryList
                     .stream()
-                    .map(c -> String.format("%-4d%4s%4s", c.getCountry_id(), c.getCountry_name(), c.getCountry_code()))
+                    .map(c -> String.format("%-4d%4s%4s", c.getId(), c.getName(), c.getCode()))
                     .forEach(System.out::println);
         } finally {
             // 不要忘记关闭 sqlSession

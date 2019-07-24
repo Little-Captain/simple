@@ -1,10 +1,10 @@
 package tk.mybatis.simple.model;
 
-public class Country {
+public class SysPrivilege {
 
     private Long id;
     private String name;
-    private String code;
+    private String url;
 
     public Long getId() {
         return id;
@@ -22,11 +22,11 @@ public class Country {
         this.name = name;
     }
 
-    public String getCode() {
-        return code;
+    public String getUrl() {
+        return url;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
