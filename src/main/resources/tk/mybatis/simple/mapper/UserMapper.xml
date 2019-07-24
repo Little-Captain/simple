@@ -3,4 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tk.mybatis.simple.mapper.UserMapper">
+    <resultMap id="userMap" type="tk.mybatis.simple.model.SysUser">
+        <id property="id" column="sys_user_id"/>
+        <result property="username" column="user_name"/>
+        <result property="password" column="user_password"/>
+        <result property="email" column="user_email"/>
+        <result property="info" column="user_info"/>
+        <result property="headImg" column="head_img" jdbcType="BLOB"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="selectById" resultMap="userMap">
+        SELECT *
+        FROM t_sys_user
+        WHERE sys_user_id = #{id};
+    </select>
+    <select id="selectAll" resultType="tk.mybatis.simple.model.SysUser">
+        SELECT sys_user_id   id,
+               user_name     username,
+               user_password password,
+               user_email    email,
+               user_info     info,
+               head_img      headImg,
+               create_time   createTime
+        FROM t_sys_user;
+    </select>
 </mapper>

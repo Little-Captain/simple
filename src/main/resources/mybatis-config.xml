@@ -5,6 +5,8 @@
 <configuration>
     <settings>
         <setting name="logImpl" value="LOG4J"/>
+        <!-- 自动将以下划线方式命名的数据库列映射到 Java 对象的驼峰式命名属性中 -->
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
     </settings>
     <typeAliases>
         <!-- 后面使用该包下的类时，不需要使用类的全限定名称 -->
@@ -24,12 +26,13 @@
         </environment>
     </environments>
     <mappers>
-        <!--<mapper resource="tk/mybatis/simple/mapper/CountryMapper.xml"/>-->
+        <mapper resource="tk/mybatis/simple/mapper/CountryMapper.xml"/>
         <!--<mapper resource="tk/mybatis/simple/mapper/UserMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/RoleMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/PrivilegeMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/UserRoleMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/RolePrivilegeMapper.xml"/>-->
+        <!-- 能这样配置的前提是：mapper 接口和 mapper xml 文件的名称要一致 -->
         <package name="tk.mybatis.simple.mapper"/>
     </mappers>
 </configuration>
