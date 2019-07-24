@@ -1,5 +1,7 @@
 package tk.mybatis.simple.model;
 
+import org.apache.ibatis.annotations.Result;
+
 import java.util.Date;
 
 public class SysRole {

@@ -6,6 +6,7 @@ import org.junit.Test;
 import tk.mybatis.simple.model.SysRole;
 import tk.mybatis.simple.model.SysUser;
 
+import java.util.Date;
 import java.util.List;
 
 public class TestUserMapper extends TestBaseMapper {
@@ -43,6 +44,62 @@ public class TestUserMapper extends TestBaseMapper {
             Assert.assertEquals(2, roles.size());
             Assert.assertEquals("admin", roles.get(0).getUser().getUsername());
             Assert.assertEquals("admin", roles.get(1).getUser().getUsername());
+        }
+    }
+
+    @Test
+    public void testInsert() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            // 创建一个 user 对象
+            SysUser user = new SysUser();
+            user.setUsername("test1");
+            user.setPassword("123456");
+            user.setEmail("test1@mybatis.tk");
+            user.setInfo("test1 info");
+            // 正常情况下应该读入y一张图片存到 byte 数组中
+            user.setHeadImg(new byte[]{1, 2, 3});
+            user.setCreateTime(new Date());
+            // 将新建的对象插入数据库中，特别注意这里的返回值 result 是执行的 SQL 影响的行数
+            int result = userMapper.insert(user);
+            Assert.assertEquals(1, result);
+            Assert.assertNull(user.getId());
+        } finally {
+            // 默认的 sqlSessionFactory.openSession() 是不自动提交的
+            // 为了不影响其他测试，这里选择回滚
+            // 如果真的需要插入数据，就需要提交
+            sqlSession.rollback();
+            // sqlSession.commit();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testInsert2() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            // 创建一个 user 对象
+            SysUser user = new SysUser();
+            user.setUsername("test1");
+            user.setPassword("123456");
+            user.setEmail("test1@mybatis.tk");
+            user.setInfo("test1 info");
+            // 正常情况下应该读入y一张图片存到 byte 数组中
+            user.setHeadImg(new byte[]{1, 2, 3});
+            user.setCreateTime(new Date());
+            // 将新建的对象插入数据库中，特别注意这里的返回值 result 是执行的 SQL 影响的行数
+            int result = userMapper.insert2(user);
+            Assert.assertEquals(1, result);
+            Assert.assertNotNull(user.getId());
+        } finally {
+            // 默认的 sqlSessionFactory.openSession() 是不自动提交的
+            // 为了不影响其他测试，这里选择回滚
+            // 如果真的需要插入数据，就需要提交
+            sqlSession.rollback();
+            // sqlSession.commit();
+            sqlSession.close();
         }
     }
 }
