@@ -93,4 +93,35 @@
             SELECT last_insert_id()
         </selectKey>
     </insert>
+    <update id="updateById">
+        UPDATE t_sys_user
+        SET user_name     = #{username},
+            user_password = #{password},
+            user_email    = #{email},
+            user_info     = #{info},
+            head_img      = #{headImg, jdbcType=BLOB},
+            create_time   = #{createTime, jdbcType=TIMESTAMP}
+        WHERE sys_user_id = #{id};
+    </update>
+    <delete id="deleteById">
+        DELETE
+        FROM t_sys_user
+        WHERE sys_user_id = #{id}
+    </delete>
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="tk.mybatis.simple.model.SysRole">
+        SELECT *
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{userId}
+          AND r.enabled = #{enabled};
+    </select>
+    <select id="selectRolesByUserAndRole" resultType="tk.mybatis.simple.model.SysRole">
+        SELECT *
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{user.id}
+          AND r.enabled = #{role.enabled};
+    </select>
 </mapper>
