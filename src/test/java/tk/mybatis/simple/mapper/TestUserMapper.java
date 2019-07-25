@@ -189,4 +189,62 @@ public class TestUserMapper extends TestBaseMapper {
             Assert.assertTrue(roles.size() > 0);
         }
     }
+
+    @Test
+    public void testSelectByUser() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser query = new SysUser();
+            query.setUsername("ad");
+            List<SysUser> users = userMapper.selectByUser(query);
+            Assert.assertEquals(1, users.size());
+            query = new SysUser();
+            query.setEmail("test@mybatis.tk");
+            users = userMapper.selectByUser(query);
+            Assert.assertEquals(1, users.size());
+            query = new SysUser();
+            query.setUsername("ad");
+            query.setEmail("test@mybatis.tk");
+            users = userMapper.selectByUser(query);
+            Assert.assertEquals(0, users.size());
+        }
+    }
+
+    @Test
+    public void testUpdateByIdSelective() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = new SysUser();
+            user.setId(1L);
+            user.setEmail("test@mybatis.tk");
+            int result = userMapper.updateByIdSelective(user);
+            Assert.assertEquals(1, result);
+            user = userMapper.selectById(1L);
+            Assert.assertEquals("admin", user.getUsername());
+            Assert.assertEquals("test@mybatis.tk", user.getEmail());
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testInsert2Selective() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = new SysUser();
+            user.setUsername("test-selective");
+            user.setPassword("123456");
+            user.setInfo("test info");
+            user.setCreateTime(new Date());
+            userMapper.insert2(user);
+            user = userMapper.selectById(user.getId());
+            Assert.assertEquals("test@mybatis.tk", user.getEmail());
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
 }

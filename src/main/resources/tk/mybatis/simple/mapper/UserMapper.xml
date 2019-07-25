@@ -15,7 +15,7 @@
     <select id="selectById" resultMap="userMap">
         SELECT *
         FROM t_sys_user
-        WHERE sys_user_id = #{id};
+        WHERE sys_user_id = #{id}
     </select>
     <select id="selectAll" resultType="tk.mybatis.simple.model.SysUser">
         SELECT sys_user_id   id,
@@ -25,7 +25,7 @@
                user_info     info,
                head_img      headImg,
                create_time   createTime
-        FROM t_sys_user;
+        FROM t_sys_user
     </select>
     <select id="selectRolesByUserId" resultType="tk.mybatis.simple.model.SysRole">
         SELECT r.sys_role_id id,
@@ -38,7 +38,7 @@
         FROM t_sys_user u
                  JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
                  JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
-        WHERE u.sys_user_id = #{userId};
+        WHERE u.sys_user_id = #{userId}
     </select>
     <insert id="insert">
         INSERT INTO t_sys_user(sys_user_id,
@@ -54,22 +54,26 @@
                 #{email},
                 #{info},
                 #{headImg, jdbcType=BLOB},
-                #{createTime, jdbcType=TIMESTAMP});
+                #{createTime, jdbcType=TIMESTAMP})
     </insert>
     <!-- 适用于主键自增的数据库 -->
     <insert id="insert2" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_sys_user(user_name,
-                               user_password,
-                               user_email,
-                               user_info,
-                               head_img,
-                               create_time)
+        user_password,
+        <if test="email != null and email != ''">
+            user_email,
+        </if>
+        user_info,
+        head_img,
+        create_time)
         VALUES (#{username},
-                #{password},
-                #{email},
-                #{info},
-                #{headImg, jdbcType=BLOB},
-                #{createTime, jdbcType=TIMESTAMP});
+        #{password},
+        <if test="email != null and email != ''">
+            #{email},
+        </if>
+        #{info},
+        #{headImg, jdbcType=BLOB},
+        #{createTime, jdbcType=TIMESTAMP})
     </insert>
     <!-- 适用于所有数据库 -->
     <insert id="insert3">
@@ -88,7 +92,7 @@
         #{info},
         #{headImg, jdbcType=BLOB},
         #{createTime, jdbcType=TIMESTAMP}
-        );
+        )
         <selectKey keyColumn="sys_user_id" keyProperty="id" order="AFTER" resultType="long">
             SELECT last_insert_id()
         </selectKey>
@@ -101,7 +105,7 @@
             user_info     = #{info},
             head_img      = #{headImg, jdbcType=BLOB},
             create_time   = #{createTime, jdbcType=TIMESTAMP}
-        WHERE sys_user_id = #{id};
+        WHERE sys_user_id = #{id}
     </update>
     <delete id="deleteById">
         DELETE
@@ -114,7 +118,7 @@
                  JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
                  JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
         WHERE u.sys_user_id = #{userId}
-          AND r.enabled = #{enabled};
+          AND r.enabled = #{enabled}
     </select>
     <select id="selectRolesByUserAndRole" resultType="tk.mybatis.simple.model.SysRole">
         SELECT *
@@ -122,6 +126,47 @@
                  JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
                  JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
         WHERE u.sys_user_id = #{user.id}
-          AND r.enabled = #{role.enabled};
+          AND r.enabled = #{role.enabled}
     </select>
+    <select id="selectByUser" resultType="tk.mybatis.simple.model.SysUser">
+        SELECT sys_user_id id,
+        user_name username,
+        user_password password,
+        user_email email,
+        user_info info,
+        head_img headImg,
+        create_time createTime
+        FROM t_sys_user
+        WHERE 1 = 1
+        <if test="username != null and username != ''">
+            AND user_name LIKE concat('%', #{username}, '%')
+        </if>
+        <if test="email != null and email != ''">
+            AND user_email = #{email}
+        </if>
+    </select>
+    <update id="updateByIdSelective">
+        UPDATE t_sys_user
+        SET
+        <if test="username != null and username != ''">
+            user_name = #{username},
+        </if>
+        <if test="password != null and password != ''">
+            user_password = #{password},
+        </if>
+        <if test="email != null and email != ''">
+            user_email = #{email},
+        </if>
+        <if test="info != null and info != ''">
+            user_info = #{info},
+        </if>
+        <if test="headImg != null">
+            head_img = #{headImg, jdbcType=BLOB},
+        </if>
+        <if test="createTime != null">
+            create_time = #{createTime, jdbcType=TIMESTAMP},
+        </if>
+        sys_user_id = #{id}
+        WHERE sys_user_id = #{id}
+    </update>
 </mapper>
