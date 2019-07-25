@@ -1,7 +1,5 @@
 package tk.mybatis.simple.model;
 
-import org.apache.ibatis.annotations.Result;
-
 import java.util.Date;
 
 public class SysRole {
@@ -60,5 +58,17 @@ public class SysRole {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "SysRole{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", enabled=" + enabled +
+                ", createBy=" + createBy +
+                ", createTime=" + createTime +
+                ", user=" + user +
+                '}';
     }
 }

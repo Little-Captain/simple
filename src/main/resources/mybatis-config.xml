@@ -26,6 +26,7 @@
         </environment>
     </environments>
     <mappers>
+        <!-- xml 方式 -->
         <mapper resource="tk/mybatis/simple/mapper/CountryMapper.xml"/>
         <!--<mapper resource="tk/mybatis/simple/mapper/UserMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/RoleMapper.xml"/>-->
