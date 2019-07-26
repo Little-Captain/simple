@@ -169,4 +169,26 @@
         sys_user_id = #{id}
         WHERE sys_user_id = #{id}
     </update>
+    <select id="selectByIdOrUserName" resultType="tk.mybatis.simple.model.SysUser">
+        select sys_user_id id,
+        user_name username,
+        user_password password,
+        user_email email,
+        user_info info,
+        head_img headImg,
+        create_time createTime
+        from t_sys_user
+        WHERE 1 = 1
+        <choose>
+            <when test="id != null">
+                AND sys_user_id = #{id}
+            </when>
+            <when test="username != null and username != ''">
+                AND user_name = #{username}
+            </when>
+            <otherwise>
+                AND 1 = 2
+            </otherwise>
+        </choose>
+    </select>
 </mapper>
