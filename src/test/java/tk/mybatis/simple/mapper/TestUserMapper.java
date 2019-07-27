@@ -6,8 +6,12 @@ import org.junit.Test;
 import tk.mybatis.simple.model.SysRole;
 import tk.mybatis.simple.model.SysUser;
 
-import java.util.Date;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public class TestUserMapper extends TestBaseMapper {
 
@@ -263,6 +267,55 @@ public class TestUserMapper extends TestBaseMapper {
             query.setUsername(null);
             user = userMapper.selectByIdOrUserName(query);
             Assert.assertNull(user);
+        }
+    }
+
+    @Test
+    public void testSelectByIdList() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> users = userMapper.selectByIdList(asList(1L, 1001L, 1002L));
+            Assert.assertEquals(2, users.size());
+        }
+    }
+
+    @Test
+    public void testInsertList() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            List<SysUser> users = new ArrayList<>();
+            for (int i = 0; i < 2; ++i) {
+                SysUser user = new SysUser();
+                user.setUsername("test" + i);
+                user.setPassword("123456");
+                user.setEmail("test@mybatis.tk");
+                users.add(user);
+            }
+            int result = userMapper.insertList(users);
+            Assert.assertEquals(2, result);
+            users.stream().map(SysUser::getId).forEach(System.out::println);
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testUpdateByMap() {
+        SqlSession sqlSession = getSqlSession();
+        try {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            Map<String, Object> map = new HashMap<>();
+            map.put("sys_user_id", 1L);
+            map.put("user_email", "test@mybatis.tk");
+            map.put("user_password", "12345678");
+            userMapper.updateByMap(map);
+            SysUser user = userMapper.selectById(1L);
+            Assert.assertEquals("test@mybatis.tk", user.getEmail());
+        } finally {
+            sqlSession.rollback();
+            sqlSession.close();
         }
     }
 }

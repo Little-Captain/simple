@@ -137,36 +137,44 @@
         head_img headImg,
         create_time createTime
         FROM t_sys_user
-        WHERE 1 = 1
-        <if test="username != null and username != ''">
-            AND user_name LIKE concat('%', #{username}, '%')
-        </if>
-        <if test="email != null and email != ''">
-            AND user_email = #{email}
-        </if>
+        <where>
+            <if test="username != null and username != ''">
+                <!--<bind name="username_like" value="'%' + username + '%'"/>-->
+                <if test="_databaseId == 'mysql'">
+                    AND user_name LIKE concat('%', #{username}, '%')
+                </if>
+                <if test="_databaseId == 'oracle'">
+                    AND user_name LIKE '%'||#{username}||'%'
+                </if>
+            </if>
+            <if test="email != null and email != ''">
+                AND user_email = #{email}
+            </if>
+        </where>
     </select>
     <update id="updateByIdSelective">
         UPDATE t_sys_user
-        SET
-        <if test="username != null and username != ''">
-            user_name = #{username},
-        </if>
-        <if test="password != null and password != ''">
-            user_password = #{password},
-        </if>
-        <if test="email != null and email != ''">
-            user_email = #{email},
-        </if>
-        <if test="info != null and info != ''">
-            user_info = #{info},
-        </if>
-        <if test="headImg != null">
-            head_img = #{headImg, jdbcType=BLOB},
-        </if>
-        <if test="createTime != null">
-            create_time = #{createTime, jdbcType=TIMESTAMP},
-        </if>
-        sys_user_id = #{id}
+        <set>
+            <if test="username != null and username != ''">
+                user_name = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                user_password = #{password},
+            </if>
+            <if test="email != null and email != ''">
+                user_email = #{email},
+            </if>
+            <if test="info != null and info != ''">
+                user_info = #{info},
+            </if>
+            <if test="headImg != null">
+                head_img = #{headImg, jdbcType=BLOB},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime, jdbcType=TIMESTAMP},
+            </if>
+            sys_user_id = #{id},
+        </set>
         WHERE sys_user_id = #{id}
     </update>
     <select id="selectByIdOrUserName" resultType="tk.mybatis.simple.model.SysUser">
@@ -183,7 +191,8 @@
             <when test="id != null">
                 AND sys_user_id = #{id}
             </when>
-            <when test="username != null and username != ''">
+            <!--<when test="username != null and username != ''">-->
+            <when test="@tk.mybatis.util.StringUtil@isNotEmpty(username)">
                 AND user_name = #{username}
             </when>
             <otherwise>
@@ -191,4 +200,62 @@
             </otherwise>
         </choose>
     </select>
+    <select id="selectByIdList" resultType="tk.mybatis.simple.model.SysUser">
+        SELECT sys_user_id id,
+        user_name username,
+        user_password password,
+        user_email email,
+        user_info info,
+        head_img headImg,
+        create_time createTime
+        FROM t_sys_user
+        WHERE sys_user_id IN
+        <foreach collection="ids" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+    <!-- 批量回写失败 -->
+    <!--<insert id="insertList" useGeneratedKeys="true" keyProperty="id">-->
+    <insert id="insertList">
+        INSERT INTO t_sys_user (
+        user_name,
+        user_password,
+        user_email,
+        user_info,
+        head_img,
+        create_time
+        )
+        VALUES
+        <foreach collection="users" item="u" separator=",">
+            (
+            #{u.username},
+            #{u.password},
+            #{u.email},
+            #{u.info},
+            #{u.headImg, jdbcType=BLOB},
+            #{u.createTime, jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+    <update id="updateByMap">
+        UPDATE t_sys_user
+        SET
+        <foreach collection="_parameter" item="val" index="key" separator=",">
+            ${key} = #{val}
+        </foreach>
+        <bind name="print" value="@tk.mybatis.util.StringUtil@print(_parameter)"/>
+        <!-- map 用 . 语法 -->
+        <!-- WHERE sys_user_id = #{_parameter.sys_user_id} -->
+        <!-- 对象通过 ${OGNL} 可以直接调方法 -->
+        <!-- WHERE sys_user_id = ${_parameter.get("sys_user_id")} -->
+        <!-- WHERE sys_user_id = ${_parameter['sys_user_id']} -->
+        <bind name="id" value="_parameter['sys_user_id']"/>
+        WHERE sys_user_id = #{id}
+        <!--
+        从 Map 获取 value
+        1. map[key]
+        2. map.key
+        注意: 必须保证 key 存在，不然会报错
+        -->
+    </update>
 </mapper>

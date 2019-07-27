@@ -5,6 +5,7 @@ import tk.mybatis.simple.model.SysRole;
 import tk.mybatis.simple.model.SysUser;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
 
@@ -33,4 +34,10 @@ public interface UserMapper {
     int updateByIdSelective(SysUser sysUser);
 
     SysUser selectByIdOrUserName(SysUser sysUser);
+
+    List<SysUser> selectByIdList(@Param("ids") List<Long> idList);
+
+    int insertList(@Param("users") List<SysUser> users);
+
+    int updateByMap(Map<String, Object> map);
 }
