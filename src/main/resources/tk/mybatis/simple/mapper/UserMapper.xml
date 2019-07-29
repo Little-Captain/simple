@@ -178,14 +178,14 @@
         WHERE sys_user_id = #{id}
     </update>
     <select id="selectByIdOrUserName" resultType="tk.mybatis.simple.model.SysUser">
-        select sys_user_id id,
+        SELECT sys_user_id id,
         user_name username,
         user_password password,
         user_email email,
         user_info info,
         head_img headImg,
         create_time createTime
-        from t_sys_user
+        FROM t_sys_user
         WHERE 1 = 1
         <choose>
             <when test="id != null">
@@ -258,4 +258,22 @@
         注意: 必须保证 key 存在，不然会报错
         -->
     </update>
+    <select id="selectUserAndRoleById" resultType="tk.mybatis.simple.model.SysUser">
+        SELECT u.sys_user_id   id,
+               u.user_name     username,
+               u.user_password password,
+               u.user_email    email,
+               u.user_info     info,
+               u.head_img      headImg,
+               u.create_time   createTime,
+               r.sys_role_id   `role.id`,
+               r.role_name     `role.name`,
+               r.enabled       `role.enabled`,
+               r.create_by     `role.createBy`,
+               r.create_time   `role.createTime`
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{id};
+    </select>
 </mapper>

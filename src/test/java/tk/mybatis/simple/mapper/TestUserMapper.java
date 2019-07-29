@@ -318,4 +318,14 @@ public class TestUserMapper extends TestBaseMapper {
             sqlSession.close();
         }
     }
+
+    @Test
+    public void testSelectUserAndRoleById() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = userMapper.selectUserAndRoleById(1001L);
+            Assert.assertNotNull(user);
+            Assert.assertNotNull(user.getRole());
+        }
+    }
 }

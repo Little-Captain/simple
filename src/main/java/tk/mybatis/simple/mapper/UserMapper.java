@@ -40,4 +40,6 @@ public interface UserMapper {
     int insertList(@Param("users") List<SysUser> users);
 
     int updateByMap(Map<String, Object> map);
+
+    SysUser selectUserAndRoleById(Long id);
 }

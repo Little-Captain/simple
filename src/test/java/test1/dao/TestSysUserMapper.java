@@ -2,7 +2,6 @@ package test1.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
-import test.model.CountryExample;
 import test1.model.SysUser;
 import test1.model.SysUserExample;
 import tk.mybatis.simple.mapper.TestBaseMapper;
@@ -22,11 +21,11 @@ public class TestSysUserMapper extends TestBaseMapper {
 
     @Test
     public void testSelectByName() {
-        try (SqlSession sqlSession = getSqlSession()) {
-            SysUserMapper mapper = sqlSession.getMapper(SysUserMapper.class);
-            SysUser user = mapper.selectByName("admin");
-            System.out.println(user);
-        }
+//        try (SqlSession sqlSession = getSqlSession()) {
+//            SysUserMapper mapper = sqlSession.getMapper(SysUserMapper.class);
+//            SysUser user = mapper.selectByName("admin");
+//            System.out.println(user);
+//        }
     }
 
     @Test
