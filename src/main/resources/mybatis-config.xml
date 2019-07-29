@@ -37,7 +37,7 @@
     </databaseIdProvider>
     <mappers>
         <!-- xml 方式 -->
-        <mapper resource="tk/mybatis/simple/mapper/CountryMapper.xml"/>
+        <!--<mapper resource="tk/mybatis/simple/mapper/CountryMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/UserMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/RoleMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/PrivilegeMapper.xml"/>-->
@@ -45,5 +45,6 @@
         <!--<mapper resource="tk/mybatis/simple/mapper/RolePrivilegeMapper.xml"/>-->
         <!-- 能这样配置的前提是：mapper 接口和 mapper xml 文件的名称要一致 -->
         <package name="tk.mybatis.simple.mapper"/>
+        <package name="test.dao"/>
     </mappers>
 </configuration>
