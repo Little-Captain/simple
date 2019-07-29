@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
 import test.model.Country;
 import tk.mybatis.simple.mapper.TestBaseMapper;
+//import tk.mybatis.simple.model.Country;
 
 import java.util.List;
 
@@ -20,5 +21,4 @@ public class TestCountryMapper extends TestBaseMapper {
                     .forEach(System.out::println);
         }
     }
-
 }
