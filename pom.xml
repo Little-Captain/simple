@@ -9,46 +9,52 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
-        <project.build.JDKVersion>1.8</project.build.JDKVersion>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <junit.version>4.12</junit.version>
+        <mybatis.version>3.4.0</mybatis.version>
+        <mysql.version>8.0.16</mysql.version>
+        <slf4j.version>1.7.26</slf4j.version>
+        <slf4j.log4j12.version>1.7.12</slf4j.log4j12.version>
+        <log4j.version>1.2.17</log4j.version>
+        <lombok.version>1.18.8</lombok.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.3.1</version>
+            <version>${mybatis.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.16</version>
+            <version>${mysql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.26</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.log4j12.version}</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.mybatis.generator</groupId>
-            <artifactId>mybatis-generator-core</artifactId>
-            <version>1.3.3</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 
@@ -57,34 +63,37 @@
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${project.build.JDKVersion}</source>
-                    <target>${project.build.JDKVersion}</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.3</version>
-                <configuration>
-                    <configurationFile>
-                        ${basedir}/src/main/resources/generator/generatorConfig.xml
-                    </configurationFile>
-                    <overwrite>true</overwrite>
-                    <verbose>true</verbose>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>mysql</groupId>
-                        <artifactId>mysql-connector-java</artifactId>
-                        <version>8.0.16</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>tk.mybatis</groupId>
-                        <artifactId>simple</artifactId>
-                        <version>0.0.1-SNAPSHOT</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.mybatis.generator</groupId>-->
+            <!--<artifactId>mybatis-generator-maven-plugin</artifactId>-->
+            <!--<version>1.3.3</version>-->
+            <!--<configuration>-->
+            <!--&lt;!&ndash;<configurationFile>&ndash;&gt;-->
+            <!--&lt;!&ndash;${basedir}/src/main/resources/generator/generatorConfig.xml&ndash;&gt;-->
+            <!--&lt;!&ndash;</configurationFile>&ndash;&gt;-->
+            <!--<configurationFile>-->
+            <!--${basedir}/src/main/resources/generator/generatorConfig-country.xml-->
+            <!--</configurationFile>-->
+            <!--<overwrite>true</overwrite>-->
+            <!--<verbose>true</verbose>-->
+            <!--</configuration>-->
+            <!--<dependencies>-->
+            <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>8.0.16</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--<groupId>tk.mybatis</groupId>-->
+            <!--<artifactId>simple</artifactId>-->
+            <!--<version>0.0.1-SNAPSHOT</version>-->
+            <!--</dependency>-->
+            <!--</dependencies>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 </project>

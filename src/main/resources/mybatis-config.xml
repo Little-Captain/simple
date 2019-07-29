@@ -43,6 +43,7 @@
         <!--<mapper resource="tk/mybatis/simple/mapper/PrivilegeMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/UserRoleMapper.xml"/>-->
         <!--<mapper resource="tk/mybatis/simple/mapper/RolePrivilegeMapper.xml"/>-->
+        <mapper resource="test1/dao/SysUserMapper.xml"/>
         <!-- 能这样配置的前提是：mapper 接口和 mapper xml 文件的名称要一致 -->
         <package name="tk.mybatis.simple.mapper"/>
         <package name="test.dao"/>
