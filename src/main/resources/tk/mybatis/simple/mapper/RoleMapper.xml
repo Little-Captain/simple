@@ -19,6 +19,12 @@
                     columnPrefix="privilege_"
                     resultMap="tk.mybatis.simple.mapper.PrivilegeMapper.privilegeMap"/>
     </resultMap>
+    <resultMap id="rolePrivilegesMapSelect" extends="roleMap" type="tk.mybatis.simple.model.SysRole">
+        <collection property="privileges"
+                    fetchType="lazy"
+                    column="{roleId=sys_role_id}"
+                    select="tk.mybatis.simple.mapper.PrivilegeMapper.selectPrivilegeByRoleId"/>
+    </resultMap>
     <select id="selectRoleById" resultMap="roleMap">
         SELECT *
         FROM t_sys_role
@@ -36,5 +42,16 @@
         FROM t_sys_role r
                  JOIN t_sys_role_privilege rp ON rp.sys_role_id = r.sys_role_id
                  JOIN t_sys_privilege p ON p.sys_privilege_id = rp.sys_privilege_id;
+    </select>
+    <select id="selectRoleByUserId"
+            resultMap="rolePrivilegesMapSelect">
+        SELECT r.sys_role_id,
+               r.role_name,
+               r.enabled,
+               r.create_by,
+               r.create_time
+        FROM t_sys_role r
+                 JOIN t_sys_user_role ur ON ur.sys_role_id = r.sys_role_id
+        WHERE ur.sys_user_id = #{userId}
     </select>
 </mapper>

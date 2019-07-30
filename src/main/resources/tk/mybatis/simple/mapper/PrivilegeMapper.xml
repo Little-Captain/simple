@@ -8,4 +8,10 @@
         <result property="name" column="privilege_name"/>
         <result property="url" column="privilege_url"/>
     </resultMap>
+    <select id="selectPrivilegeByRoleId" resultMap="privilegeMap">
+        SELECT p.*
+        FROM t_sys_privilege p
+                 JOIN t_sys_role_privilege rp ON rp.sys_privilege_id = p.sys_privilege_id
+        WHERE rp.sys_role_id = #{roleId};
+    </select>
 </mapper>
