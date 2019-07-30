@@ -2,6 +2,7 @@ package tk.mybatis.simple.model;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class SysUser {
 
@@ -28,6 +29,16 @@ public class SysUser {
     }
 
     private SysRole role;
+
+    private List<SysRole> roles;
+
+    public List<SysRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<SysRole> roles) {
+        this.roles = roles;
+    }
 
     public SysRole getRole() {
         return role;

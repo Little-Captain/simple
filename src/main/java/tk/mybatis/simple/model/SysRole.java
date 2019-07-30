@@ -1,6 +1,7 @@
 package tk.mybatis.simple.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysRole {
 
@@ -9,6 +10,16 @@ public class SysRole {
     private Integer enabled;
     private Long createBy;
     private Date createTime;
+
+    private CreateInfo createInfo;
+
+    public CreateInfo getCreateInfo() {
+        return createInfo;
+    }
+
+    public void setCreateInfo(CreateInfo createInfo) {
+        this.createInfo = createInfo;
+    }
 
     private SysUser user;
 
@@ -19,6 +30,17 @@ public class SysRole {
     public void setUser(SysUser user) {
         this.user = user;
     }
+
+    private List<SysPrivilege> privileges;
+
+    public List<SysPrivilege> getPrivileges() {
+        return privileges;
+    }
+
+    public void setPrivileges(List<SysPrivilege> privileges) {
+        this.privileges = privileges;
+    }
+
 
     public Long getId() {
         return id;

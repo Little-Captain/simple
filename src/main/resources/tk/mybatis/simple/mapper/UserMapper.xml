@@ -22,6 +22,11 @@
                      column="{id=sys_role_id}"
                      select="tk.mybatis.simple.mapper.RoleMapper.selectRoleById"/>
     </resultMap>
+    <resultMap id="userRolesMap" extends="userMap" type="tk.mybatis.simple.model.SysUser">
+        <collection property="roles"
+                    columnPrefix="role_"
+                    resultMap="tk.mybatis.simple.mapper.RoleMapper.rolePrivilegesMap"/>
+    </resultMap>
     <select id="selectById" resultMap="userMap">
         SELECT *
         FROM t_sys_user
@@ -316,5 +321,27 @@
         FROM t_sys_user u
                  JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
         WHERE u.sys_user_id = #{id};
+    </select>
+    <select id="selectAllUserAndRoles" resultMap="userRolesMap">
+        SELECT u.sys_user_id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.sys_role_id      role_sys_role_id,
+               r.role_name        role_role_name,
+               r.enabled          role_enabled,
+               r.create_by        role_create_by,
+               r.create_time      role_create_time,
+               p.sys_privilege_id role_privilege_sys_privilege_id,
+               p.privilege_name   role_privilege_privilege_name,
+               p.privilege_url    role_privilege_privilege_url
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+                 JOIN t_sys_role_privilege rp ON rp.sys_role_id = r.sys_role_id
+                 JOIN t_sys_privilege p ON p.sys_privilege_id = rp.sys_privilege_id
     </select>
 </mapper>

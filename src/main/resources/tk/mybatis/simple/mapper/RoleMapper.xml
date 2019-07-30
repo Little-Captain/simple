@@ -7,11 +7,34 @@
         <result property="id" column="sys_role_id"/>
         <result property="name" column="role_name"/>
         <result property="enabled" column="enabled"/>
-        <result property="createBy" column="create_by"/>
-        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <!--<result property="createBy" column="create_by"/>-->
+        <!--<result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+        <association property="createInfo" javaType="tk.mybatis.simple.model.CreateInfo">
+            <result property="createBy" column="create_by"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        </association>
+    </resultMap>
+    <resultMap id="rolePrivilegesMap" extends="roleMap" type="tk.mybatis.simple.model.SysRole">
+        <collection property="privileges"
+                    columnPrefix="privilege_"
+                    resultMap="tk.mybatis.simple.mapper.PrivilegeMapper.privilegeMap"/>
     </resultMap>
     <select id="selectRoleById" resultMap="roleMap">
-        select *
-        from t_sys_role WHERE sys_role_id = #{id};
+        SELECT *
+        FROM t_sys_role
+        WHERE sys_role_id = #{id};
+    </select>
+    <select id="selectAllRoleAndPrivileges" resultMap="rolePrivilegesMap">
+        SELECT r.sys_role_id,
+               r.role_name,
+               r.enabled,
+               r.create_by,
+               r.create_time,
+               p.sys_privilege_id privilege_sys_privilege_id,
+               p.privilege_name   privilege_privilege_name,
+               p.privilege_url    privilege_privilege_url
+        FROM t_sys_role r
+                 JOIN t_sys_role_privilege rp ON rp.sys_role_id = r.sys_role_id
+                 JOIN t_sys_privilege p ON p.sys_privilege_id = rp.sys_privilege_id;
     </select>
 </mapper>
