@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface RoleMapper {
 
+    SysRole selectRoleById(Long id);
+
     @Select({"SELECT sys_role_id id, role_name name, enabled, create_by createBy, create_time createTime",
             "FROM t_sys_role ",
             "WHERE sys_role_id = #{id};"})

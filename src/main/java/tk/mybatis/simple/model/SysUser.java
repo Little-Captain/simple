@@ -1,5 +1,6 @@
 package tk.mybatis.simple.model;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class SysUser {
@@ -11,6 +12,20 @@ public class SysUser {
     private String info;
     private byte[] headImg;
     private Date createTime;
+
+    @Override
+    public String toString() {
+        return "SysUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", info='" + info + '\'' +
+                ", headImg=" + Arrays.toString(headImg) +
+                ", createTime=" + createTime +
+                ", role=" + role +
+                '}';
+    }
 
     private SysRole role;
 

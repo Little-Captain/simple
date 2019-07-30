@@ -328,4 +328,29 @@ public class TestUserMapper extends TestBaseMapper {
             Assert.assertNotNull(user.getRole());
         }
     }
+
+    @Test
+    public void testSelectUserAndRoleById2() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = userMapper.selectUserAndRoleById2(1001L);
+            Assert.assertNotNull(user);
+            Assert.assertNotNull(user.getRole());
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleByIdSelect() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+            SysUser user = userMapper.selectUserAndRoleByIdSelect(1001L);
+            Assert.assertNotNull(user);
+            System.out.println("调用 user.hashCode()");
+            System.out.println(user.hashCode());
+            System.out.println("调用 user.getRole()");
+            Assert.assertNotNull(user.getRole());
+            System.out.println(user);
+        }
+    }
 }

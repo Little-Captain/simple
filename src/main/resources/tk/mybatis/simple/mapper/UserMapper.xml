@@ -12,6 +12,16 @@
         <result property="headImg" column="head_img" jdbcType="BLOB"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
+    <resultMap id="userRoleMap" extends="userMap" type="tk.mybatis.simple.model.SysUser">
+        <association property="role" columnPrefix="role_"
+                     resultMap="tk.mybatis.simple.mapper.RoleMapper.roleMap"/>
+    </resultMap>
+    <resultMap id="userRoleMapSelect" extends="userMap" type="tk.mybatis.simple.model.SysUser">
+        <association property="role"
+                     fetchType="lazy"
+                     column="{id=sys_role_id}"
+                     select="tk.mybatis.simple.mapper.RoleMapper.selectRoleById"/>
+    </resultMap>
     <select id="selectById" resultMap="userMap">
         SELECT *
         FROM t_sys_user
@@ -274,6 +284,37 @@
         FROM t_sys_user u
                  JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
                  JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{id};
+    </select>
+    <select id="selectUserAndRoleById2" resultMap="userRoleMap">
+        SELECT u.sys_user_id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.sys_role_id role_sys_role_id,
+               r.role_name   role_role_name,
+               r.enabled     role_enabled,
+               r.create_by   role_create_by,
+               r.create_time role_create_time
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
+                 JOIN t_sys_role r ON ur.sys_role_id = r.sys_role_id
+        WHERE u.sys_user_id = #{id};
+    </select>
+    <select id="selectUserAndRoleByIdSelect" resultMap="userRoleMapSelect">
+        SELECT u.sys_user_id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               ur.sys_role_id
+        FROM t_sys_user u
+                 JOIN t_sys_user_role ur ON u.sys_user_id = ur.sys_user_id
         WHERE u.sys_user_id = #{id};
     </select>
 </mapper>
