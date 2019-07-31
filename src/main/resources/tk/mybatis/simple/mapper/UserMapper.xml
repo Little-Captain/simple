@@ -34,6 +34,11 @@
                     select="tk.mybatis.simple.mapper.RoleMapper.selectRoleByUserId"
                     column="{userId=sys_user_id}"/>
     </resultMap>
+    <!-- flushCache = true 会在查询数据库前清空当前的一级缓存 -->
+    <!-- flushCache = true 致使该方法会在每次都重新从数据库中查询数据 -->
+    <!-- flushCache = true 会清空当前 SqlSession 中的所有一级缓存，所以其他查询也会受到影响 -->
+    <!-- 另外任何的 INSERT UPDATE DELETE 操作都会清空一级缓存 -->
+    <!--<select id="selectById" flushCache="true" resultMap="userMap">-->
     <select id="selectById" resultMap="userMap">
         SELECT *
         FROM t_sys_user
