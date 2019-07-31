@@ -362,4 +362,38 @@
         FROM t_sys_user u
         WHERE u.sys_user_id = #{id};
     </select>
+    <select id="selectUserById" statementType="CALLABLE" useCache="false">
+        {call select_user_by_id(
+                #{id,mode=IN,jdbcType=BIGINT},
+                #{username,mode=OUT,jdbcType=VARCHAR},
+                #{password,mode=OUT,jdbcType=VARCHAR},
+                #{email,mode=OUT,jdbcType=VARCHAR},
+                #{info,mode=OUT,jdbcType=VARCHAR},
+                #{headImg,mode=OUT,jdbcType=BLOB,javaType=_byte[]},
+                #{createTime,mode=OUT,jdbcType=TIMESTAMP}
+            )}
+    </select>
+    <select id="selectUserPage" statementType="CALLABLE" useCache="false" resultMap="userMap">
+        {CALL select_user_page(
+                #{userName,mode=IN},
+                #{offset,mode=IN},
+                #{limit,mode=IN},
+                #{total,mode=OUT,jdbcType=BIGINT}
+            )}
+    </select>
+    <insert id="insertUserAndRoles" statementType="CALLABLE">
+        {CALL insert_user_and_roles(
+                #{user.id,mode=OUT,jdbcType=BIGINT},
+                #{user.username,mode=IN,jdbcType=VARCHAR},
+                #{user.password,mode=IN,jdbcType=VARCHAR},
+                #{user.email,mode=IN,jdbcType=VARCHAR},
+                #{user.info,mode=IN,jdbcType=VARCHAR},
+                #{user.headImg,mode=IN,jdbcType=BLOB},
+                #{user.createTime,mode=OUT,jdbcType=TIMESTAMP},
+                #{roleIds,mode=IN,jdbcType=VARCHAR}
+            )}
+    </insert>
+    <delete id="deleteUserById" statementType="CALLABLE">
+        {CALL delete_user_by_id(#{id,mode=IN,jdbcType=BIGINT})}
+    </delete>
 </mapper>

@@ -50,4 +50,12 @@ public interface UserMapper {
     List<SysUser> selectAllUserAndRoles();
 
     SysUser selectAllUserAndRolesSelect(Long id);
+
+    void selectUserById(SysUser user);
+
+    List<SysUser> selectUserPage(Map<String, Object> params);
+
+    int insertUserAndRoles(@Param("user") SysUser user, @Param("roleIds") String roleIds);
+
+    int deleteUserById(Long id);
 }
