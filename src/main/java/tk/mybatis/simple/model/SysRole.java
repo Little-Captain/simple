@@ -2,10 +2,11 @@ package tk.mybatis.simple.model;
 
 import tk.mybatis.simple.type.Enabled;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class SysRole {
+public class SysRole implements Serializable {
 
     private Long id;
     private String name;
