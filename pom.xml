@@ -12,6 +12,7 @@
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
         <mybatis.version>3.4.0</mybatis.version>
+        <mybatis.typehandlers.version>1.0.2</mybatis.typehandlers.version>
         <mysql.version>8.0.16</mysql.version>
         <slf4j.version>1.7.26</slf4j.version>
         <slf4j.log4j12.version>1.7.12</slf4j.log4j12.version>
@@ -30,6 +31,11 @@
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
             <version>${mybatis.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>${mybatis.typehandlers.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

@@ -6,6 +6,7 @@ import org.junit.Test;
 import tk.mybatis.simple.model.SysPrivilege;
 import tk.mybatis.simple.model.SysRole;
 import tk.mybatis.simple.model.SysUser;
+import tk.mybatis.simple.type.Enabled;
 
 import java.util.*;
 
@@ -185,7 +186,7 @@ public class TestUserMapper extends TestBaseMapper {
             SysUser user = new SysUser();
             user.setId(1L);
             SysRole role = new SysRole();
-            role.setEnabled(1);
+            role.setEnabled(Enabled.enabled);
             List<SysRole> roles = userMapper.selectRolesByUserAndRole(user, role);
             Assert.assertNotNull(roles);
             Assert.assertTrue(roles.size() > 0);

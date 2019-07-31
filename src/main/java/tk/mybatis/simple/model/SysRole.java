@@ -1,5 +1,7 @@
 package tk.mybatis.simple.model;
 
+import tk.mybatis.simple.type.Enabled;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,7 +9,7 @@ public class SysRole {
 
     private Long id;
     private String name;
-    private Integer enabled;
+    private Enabled enabled;
     private Long createBy;
     private Date createTime;
 
@@ -58,11 +60,11 @@ public class SysRole {
         this.name = name;
     }
 
-    public Integer getEnabled() {
+    public Enabled getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Enabled enabled) {
         this.enabled = enabled;
     }
 
