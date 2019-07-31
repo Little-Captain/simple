@@ -55,4 +55,27 @@ public class TestRoleMapper extends TestBaseMapper {
             }
         }
     }
+
+    @Test
+    public void testSelectRoleByUserIdChoose() {
+        try (SqlSession sqlSession = getSqlSession()) {
+            RoleMapper roleMapper = sqlSession.getMapper(RoleMapper.class);
+            SysRole role = roleMapper.selectRoleById(2L);
+            role.setEnabled(0);
+            roleMapper.updateById(role);
+            List<SysRole> roles = roleMapper.selectRoleByUserIdChoose(1L);
+            for (SysRole r : roles) {
+                System.out.println("角色名: " + r.getName());
+                if (r.getId().equals(1L)) {
+                    Assert.assertNotNull(r.getPrivileges());
+                } else if (r.getId().equals(2L)) {
+                    Assert.assertNull(r.getPrivileges());
+                    continue;
+                }
+                for (SysPrivilege privilege : r.getPrivileges()) {
+                    System.out.println("权限名: " + privilege.getName());
+                }
+            }
+        }
+    }
 }

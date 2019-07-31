@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tk.mybatis.simple.mapper.RoleMapper">
     <resultMap id="roleMap" type="tk.mybatis.simple.model.SysRole">
-        <result property="id" column="sys_role_id"/>
+        <id property="id" column="sys_role_id"/>
         <result property="name" column="role_name"/>
         <result property="enabled" column="enabled"/>
         <!--<result property="createBy" column="create_by"/>-->
@@ -24,6 +24,16 @@
                     fetchType="lazy"
                     column="{roleId=sys_role_id}"
                     select="tk.mybatis.simple.mapper.PrivilegeMapper.selectPrivilegeByRoleId"/>
+    </resultMap>
+    <resultMap id="rolePrivilegesMapChoose" type="tk.mybatis.simple.model.SysRole">
+        <discriminator column="enabled" javaType="int">
+            <case value="1" resultMap="rolePrivilegesMapSelect"/>
+            <!--<case value="0" resultMap="roleMap"/>-->
+            <case value="0" resultType="tk.mybatis.simple.model.SysRole">
+                <id property="id" column="sys_role_id"/>
+                <result property="name" column="role_name"/>
+            </case>
+        </discriminator>
     </resultMap>
     <select id="selectRoleById" resultMap="roleMap">
         SELECT *
@@ -45,6 +55,17 @@
     </select>
     <select id="selectRoleByUserId"
             resultMap="rolePrivilegesMapSelect">
+        SELECT r.sys_role_id,
+               r.role_name,
+               r.enabled,
+               r.create_by,
+               r.create_time
+        FROM t_sys_role r
+                 JOIN t_sys_user_role ur ON ur.sys_role_id = r.sys_role_id
+        WHERE ur.sys_user_id = #{userId}
+    </select>
+    <select id="selectRoleByUserIdChoose"
+            resultMap="rolePrivilegesMapChoose">
         SELECT r.sys_role_id,
                r.role_name,
                r.enabled,

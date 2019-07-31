@@ -11,7 +11,9 @@ public interface RoleMapper {
 
     List<SysRole> selectAllRoleAndPrivileges();
 
-    SysRole selectRoleByUserId(Long userId);
+    List<SysRole> selectRoleByUserId(Long userId);
+
+    List<SysRole> selectRoleByUserIdChoose(Long userId);
 
     @Select({"SELECT sys_role_id id, role_name name, enabled, create_by createBy, create_time createTime",
             "FROM t_sys_role ",
