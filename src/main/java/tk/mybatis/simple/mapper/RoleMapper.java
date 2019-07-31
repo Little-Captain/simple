@@ -5,6 +5,7 @@ import tk.mybatis.simple.model.SysRole;
 
 import java.util.List;
 
+@CacheNamespaceRef(RoleMapper.class)
 public interface RoleMapper {
 
     SysRole selectRoleById(Long id);

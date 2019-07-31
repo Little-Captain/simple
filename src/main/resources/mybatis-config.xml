@@ -8,6 +8,8 @@
         <setting name="aggressiveLazyLoading" value="false"/>
         <!-- 自动将以下划线方式命名的数据库列映射到 Java 对象的驼峰式命名属性中 -->
         <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <!-- 二级缓存全局开关 默认 true -->
+        <setting name="cacheEnabled" value="true"/>
     </settings>
     <typeAliases>
         <!-- 后面使用该包下的类时，不需要使用类的全限定名称 -->
