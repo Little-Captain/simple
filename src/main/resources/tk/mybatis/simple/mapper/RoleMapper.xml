@@ -10,7 +10,8 @@
     <!--size="512"-->
     <!--readOnly="false"/>-->
     <!-- 使用 ehcache -->
-    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>-->
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
     <resultMap id="roleMap" type="tk.mybatis.simple.model.SysRole">
         <id property="id" column="sys_role_id"/>
         <result property="name" column="role_name"/>
