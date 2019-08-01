@@ -3,6 +3,9 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tk.mybatis.simple.mapper.UserMapper">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!-- 使用参照缓存，和 RoleMapper 使用同一个缓存 -->
+    <!--<cache-ref namespace="tk.mybatis.simple.mapper.RoleMapper"/>-->
     <resultMap id="userMap" type="tk.mybatis.simple.model.SysUser">
         <id property="id" column="sys_user_id"/>
         <result property="username" column="user_name"/>
